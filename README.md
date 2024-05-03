@@ -18,3 +18,10 @@ yarn start
 ```
 
 If the whole process is successful, you should see the CSV file in your root directory.
+
+
+## Running tests
+
+```bash
+yarn test
+```
