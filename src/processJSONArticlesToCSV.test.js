@@ -12,7 +12,7 @@ describe('processJSONArticlesToCSV', () => {
   it('calls createCSVFile() with undefined when JSON is empty', () => {
     jest.mocked(createCSVFile)
 
-    processJSONArticlesToCSV([], testOutputName)
+    processJSONArticlesToCSV({ jsonArticles: [], outputCSVFileName: testOutputName })
 
     expect(createCSVFile).toHaveBeenCalledWith(undefined, testOutputName)
   })
@@ -46,11 +46,12 @@ describe('processJSONArticlesToCSV', () => {
       const expected = [
         {
           body: `I want ${createRequiredHTMLTag('path/a1')} to be ${createRequiredHTMLTag('path/a2')}`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a1,path/a2'
         }
       ]
 
-      processJSONArticlesToCSV(mockArticles, testOutputName)
+      processJSONArticlesToCSV({ jsonArticles: mockArticles, outputCSVFileName: testOutputName })
 
       expect(buildCSVFromJSON).toHaveBeenCalledWith(expected)
     })
@@ -86,15 +87,17 @@ describe('processJSONArticlesToCSV', () => {
       const expected = [
         {
           body: `I want ${createRequiredHTMLTag('path/a1')} to be ${createRequiredHTMLTag('path/a2')}`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a1,path/a2'
         },
         {
           body: `I want ${createRequiredHTMLTag('path/a3')} to be ${createRequiredHTMLTag('path/a4')}`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a3,path/a4'
         }
       ]
 
-      processJSONArticlesToCSV(mockArticles, testOutputName)
+      processJSONArticlesToCSV({ jsonArticles: mockArticles, outputCSVFileName: testOutputName })
 
       expect(buildCSVFromJSON).toHaveBeenCalledWith(expected)
     })
@@ -120,11 +123,12 @@ describe('processJSONArticlesToCSV', () => {
           body: `I want ${createRequiredHTMLTagWithImageTitle('path/a1', 'test-title')} to be ${createRequiredHTMLTag(
             'path/a2'
           )}`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a1,path/a2'
         }
       ]
 
-      processJSONArticlesToCSV(mockArticles, testOutputName)
+      processJSONArticlesToCSV({ jsonArticles: mockArticles, outputCSVFileName: testOutputName })
 
       expect(buildCSVFromJSON).toHaveBeenCalledWith(expected)
     })
@@ -141,11 +145,12 @@ describe('processJSONArticlesToCSV', () => {
       const expected = [
         {
           body: `I want [[wysiwyg_imageupload:12341234:]] to be [[wysiwyg_imageupload:1234123412:]]`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: undefined
         }
       ]
 
-      processJSONArticlesToCSV(mockArticles, testOutputName)
+      processJSONArticlesToCSV({ jsonArticles: mockArticles, outputCSVFileName: testOutputName })
 
       expect(buildCSVFromJSON).toHaveBeenCalledWith(expected)
     })
@@ -162,11 +167,12 @@ describe('processJSONArticlesToCSV', () => {
       const expected = [
         {
           body: `I want `,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a1'
         }
       ]
 
-      processJSONArticlesToCSV(mockArticles, testOutputName)
+      processJSONArticlesToCSV({ jsonArticles: mockArticles, outputCSVFileName: testOutputName })
 
       expect(buildCSVFromJSON).toHaveBeenCalledWith(expected)
     })
@@ -214,31 +220,62 @@ describe('processJSONArticlesToCSV', () => {
       const expected = [
         {
           body: `I want ${createRequiredHTMLTag('path/a1')} to be ${createRequiredHTMLTag('path/a2')}`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a1,path/a2'
         },
         {
           body: `I want ${createRequiredHTMLTagWithImageTitle('path/a3', 'test-title')} to be ${createRequiredHTMLTag(
             'path/a4'
           )}`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a3,path/a4'
         },
         {
           body: `I want [[wysiwyg_imageupload:12341234:]] to be [[wysiwyg_imageupload:1234123412:]]`,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: undefined
         },
         {
           body: `I want `,
-          otherAttribute: 'Additional content'
+          otherAttribute: 'Additional content',
+          filepath: 'path/a1'
         }
       ]
 
-      processJSONArticlesToCSV(mockArticles, testOutputName)
+      processJSONArticlesToCSV({ jsonArticles: mockArticles, outputCSVFileName: testOutputName })
+
+      expect(buildCSVFromJSON).toHaveBeenCalledWith(expected)
+    })
+
+    it('calls with correct replaced string', () => {
+      const mockArticles = [
+        {
+          body: 'I want [[wysiwyg_imageupload:123:]]',
+          otherAttribute: 'Additional content',
+          iid: '123',
+          filepath: 'old-path/a1'
+        }
+      ]
+      const expected = [
+        {
+          body: `I want ${createRequiredHTMLTag('new-path/a1')}`,
+          otherAttribute: 'Additional content',
+          filepath: 'old-path/a1'
+        }
+      ]
+
+      processJSONArticlesToCSV({
+        jsonArticles: mockArticles,
+        outputCSVFileName: testOutputName,
+        stringToBeReplaced: 'old',
+        stringToReplace: 'new'
+      })
 
       expect(buildCSVFromJSON).toHaveBeenCalledWith(expected)
     })
 
     it('calls correctly when input article is empty', () => {
-      processJSONArticlesToCSV([], testOutputName)
+      processJSONArticlesToCSV({ jsonArticles: [], outputCSVFileName: testOutputName })
 
       expect(buildCSVFromJSON).toHaveBeenCalledWith([])
     })
