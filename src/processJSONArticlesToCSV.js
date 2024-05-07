@@ -4,12 +4,7 @@ const { logInfo } = require('./logger')
 
 const IMAGE_REGEX = /\[\[wysiwyg_imageupload:(\d+):\]\]/g
 
-const processJSONArticlesToCSV = ({
-  jsonArticles,
-  outputCSVFileName,
-  stringToBeReplaced,
-  stringToReplace
-}) => {
+const processJSONArticlesToCSV = ({ jsonArticles, outputCSVFileName, stringToBeReplaced, stringToReplace }) => {
   logInfo(`totalNumberOfArticlesFromJSON: ${jsonArticles.length}`)
 
   const result = []
@@ -17,14 +12,17 @@ const processJSONArticlesToCSV = ({
   jsonArticles.forEach((article) => {
     let body = article.body
     let filePaths = []
+    let fileNames = []
 
     if (article.iid && article.filepath) {
       body = body.replace(IMAGE_REGEX, (_, iid) => {
+        const fileName = jsonArticles.find((article) => article.iid === iid)?.filename
         const filePath = jsonArticles.find((article) => article.iid === iid)?.filepath
         if (!filePath) {
           return ''
         }
         filePaths.push(filePath)
+        fileNames.push(fileName)
         const newFilePath = filePath.replace(stringToBeReplaced, stringToReplace)
 
         const articleWithImageTitle = jsonArticles.find(
@@ -41,10 +39,14 @@ const processJSONArticlesToCSV = ({
     const hasExistingArticle = !!result.find((article) => article.body === body)
 
     if (!hasExistingArticle) {
-      const resultArticle = { body, filepath: filePaths.join() || article.filepath }
+      const resultArticle = {
+        body,
+        filepath: filePaths.join() || article.filepath,
+        filename: fileNames.join() || article.filename
+      }
 
       for (const key in article) {
-        if (key !== 'body' && key !== 'iid' && key !== 'filepath' && key !== 'image_title') {
+        if (key !== 'body' && key !== 'iid' && key !== 'image_title' && key !== 'filepath' && key !== 'filename') {
           resultArticle[key] = article[key]
         }
       }

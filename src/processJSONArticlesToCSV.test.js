@@ -34,20 +34,23 @@ describe('processJSONArticlesToCSV', () => {
           body: 'I want [[wysiwyg_imageupload:123:]] to be [[wysiwyg_imageupload:345:]]',
           otherAttribute: 'Additional content',
           iid: '123',
-          filepath: 'path/a1'
+          filepath: 'path/a1',
+          filename: 'a1'
         },
         {
           body: 'I want [[wysiwyg_imageupload:123:]] to be [[wysiwyg_imageupload:345:]]',
           otherAttribute: 'Additional content',
           iid: '345',
-          filepath: 'path/a2'
+          filepath: 'path/a2',
+          filename: 'a2'
         }
       ]
       const expected = [
         {
           body: `I want ${createRequiredHTMLTag('path/a1')} to be ${createRequiredHTMLTag('path/a2')}`,
           otherAttribute: 'Additional content',
-          filepath: 'path/a1,path/a2'
+          filepath: 'path/a1,path/a2',
+          filename: 'a1,a2'
         }
       ]
 
@@ -62,38 +65,44 @@ describe('processJSONArticlesToCSV', () => {
           body: 'I want [[wysiwyg_imageupload:123:]] to be [[wysiwyg_imageupload:345:]]',
           otherAttribute: 'Additional content',
           iid: '123',
-          filepath: 'path/a1'
+          filepath: 'path/a1',
+          filename: 'a1'
         },
         {
           body: 'I want [[wysiwyg_imageupload:123:]] to be [[wysiwyg_imageupload:345:]]',
           otherAttribute: 'Additional content',
 
           iid: '345',
-          filepath: 'path/a2'
+          filepath: 'path/a2',
+          filename: 'a2'
         },
         {
           body: 'I want [[wysiwyg_imageupload:555:]] to be [[wysiwyg_imageupload:777:]]',
           otherAttribute: 'Additional content',
           iid: '555',
-          filepath: 'path/a3'
+          filepath: 'path/a3',
+          filename: 'a3'
         },
         {
           body: 'I want [[wysiwyg_imageupload:555:]] to be [[wysiwyg_imageupload:777:]]',
           otherAttribute: 'Additional content',
           iid: '777',
-          filepath: 'path/a4'
+          filepath: 'path/a4',
+          filename: 'a4'
         }
       ]
       const expected = [
         {
           body: `I want ${createRequiredHTMLTag('path/a1')} to be ${createRequiredHTMLTag('path/a2')}`,
           otherAttribute: 'Additional content',
-          filepath: 'path/a1,path/a2'
+          filepath: 'path/a1,path/a2',
+          filename: 'a1,a2'
         },
         {
           body: `I want ${createRequiredHTMLTag('path/a3')} to be ${createRequiredHTMLTag('path/a4')}`,
           otherAttribute: 'Additional content',
-          filepath: 'path/a3,path/a4'
+          filepath: 'path/a3,path/a4',
+          filename: 'a3,a4'
         }
       ]
 
@@ -109,13 +118,15 @@ describe('processJSONArticlesToCSV', () => {
           otherAttribute: 'Additional content',
           iid: '123',
           filepath: 'path/a1',
+          filename: 'a1',
           image_title: 'test-title'
         },
         {
           body: 'I want [[wysiwyg_imageupload:123:]] to be [[wysiwyg_imageupload:345:]]',
           otherAttribute: 'Additional content',
           iid: '345',
-          filepath: 'path/a2'
+          filepath: 'path/a2',
+          filename: 'a2'
         }
       ]
       const expected = [
@@ -124,7 +135,8 @@ describe('processJSONArticlesToCSV', () => {
             'path/a2'
           )}`,
           otherAttribute: 'Additional content',
-          filepath: 'path/a1,path/a2'
+          filepath: 'path/a1,path/a2',
+          filename: 'a1,a2'
         }
       ]
 
@@ -139,14 +151,16 @@ describe('processJSONArticlesToCSV', () => {
           body: 'I want [[wysiwyg_imageupload:12341234:]] to be [[wysiwyg_imageupload:1234123412:]]',
           otherAttribute: 'Additional content',
           iid: undefined,
-          filepath: undefined
+          filepath: undefined,
+          filename: undefined
         }
       ]
       const expected = [
         {
           body: `I want [[wysiwyg_imageupload:12341234:]] to be [[wysiwyg_imageupload:1234123412:]]`,
           otherAttribute: 'Additional content',
-          filepath: undefined
+          filepath: undefined,
+          filename: undefined
         }
       ]
 
@@ -161,14 +175,16 @@ describe('processJSONArticlesToCSV', () => {
           body: 'I want [[wysiwyg_imageupload:12341234:]]',
           otherAttribute: 'Additional content',
           iid: '1',
-          filepath: 'path/a1'
+          filepath: 'path/a1',
+          filename: 'a1'
         }
       ]
       const expected = [
         {
           body: `I want `,
           otherAttribute: 'Additional content',
-          filepath: 'path/a1'
+          filepath: 'path/a1',
+          filename: 'a1'
         }
       ]
 
@@ -183,62 +199,72 @@ describe('processJSONArticlesToCSV', () => {
           body: 'I want [[wysiwyg_imageupload:123:]] to be [[wysiwyg_imageupload:345:]]',
           otherAttribute: 'Additional content',
           iid: '123',
-          filepath: 'path/a1'
+          filepath: 'path/a1',
+          filename: 'a1'
         },
         {
           body: 'I want [[wysiwyg_imageupload:123:]] to be [[wysiwyg_imageupload:345:]]',
           otherAttribute: 'Additional content',
           iid: '345',
-          filepath: 'path/a2'
+          filepath: 'path/a2',
+          filename: 'a2'
         },
         {
           body: 'I want [[wysiwyg_imageupload:555:]] to be [[wysiwyg_imageupload:666:]]',
           otherAttribute: 'Additional content',
           iid: '555',
           filepath: 'path/a3',
+          filename: 'a3',
           image_title: 'test-title'
         },
         {
           body: 'I want [[wysiwyg_imageupload:555:]] to be [[wysiwyg_imageupload:666:]]',
           otherAttribute: 'Additional content',
           iid: '666',
-          filepath: 'path/a4'
+          filepath: 'path/a4',
+          filename: 'a4'
         },
         {
           body: 'I want [[wysiwyg_imageupload:12341234:]] to be [[wysiwyg_imageupload:1234123412:]]',
           otherAttribute: 'Additional content',
           iid: undefined,
-          filepath: undefined
+          filepath: undefined,
+          filename: undefined
         },
         {
           body: 'I want [[wysiwyg_imageupload:12341234:]]',
           otherAttribute: 'Additional content',
           iid: '1',
-          filepath: 'path/a1'
+          filepath: 'path/a1',
+          filename: 'a1'
         }
       ]
       const expected = [
         {
           body: `I want ${createRequiredHTMLTag('path/a1')} to be ${createRequiredHTMLTag('path/a2')}`,
           otherAttribute: 'Additional content',
-          filepath: 'path/a1,path/a2'
+          filepath: 'path/a1,path/a2',
+          filename: 'a1,a2'
         },
         {
           body: `I want ${createRequiredHTMLTagWithImageTitle('path/a3', 'test-title')} to be ${createRequiredHTMLTag(
             'path/a4'
           )}`,
           otherAttribute: 'Additional content',
-          filepath: 'path/a3,path/a4'
+          filepath: 'path/a3,path/a4',
+          filename: 'a3,a4'
         },
         {
           body: `I want [[wysiwyg_imageupload:12341234:]] to be [[wysiwyg_imageupload:1234123412:]]`,
           otherAttribute: 'Additional content',
-          filepath: undefined
+          filepath: undefined,
+          filename: undefined
         },
         {
           body: `I want `,
           otherAttribute: 'Additional content',
-          filepath: 'path/a1'
+          filepath: 'path/a1',
+          filename: 'a1'
         }
       ]
 
@@ -253,14 +279,16 @@ describe('processJSONArticlesToCSV', () => {
           body: 'I want [[wysiwyg_imageupload:123:]]',
           otherAttribute: 'Additional content',
           iid: '123',
-          filepath: 'old-path/a1'
+          filepath: 'old-path/a1',
+          filename: 'a1'
         }
       ]
       const expected = [
         {
           body: `I want ${createRequiredHTMLTag('new-path/a1')}`,
           otherAttribute: 'Additional content',
-          filepath: 'old-path/a1'
+          filepath: 'old-path/a1',
+          filename: 'a1'
         }
       ]
 
