@@ -11,7 +11,8 @@ yarn
 
 2. Start the process
 
-Note: Make sure that you have JSON file in the root directory, please check the index.js file for the required file name.
+Note: Make sure that you have JSON file in the root directory, please check the index.js file for the required file name. You can also see the `example.json` as an sample template.
+
 
 ```bash
 yarn start
